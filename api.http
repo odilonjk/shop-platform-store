@@ -1,0 +1,10 @@
+### Create a new store.
+POST http://localhost:8082/store
+content-type: application/json
+
+{
+    "name": "Example Store & Co."
+}
+
+### Find a store by name
+GET http://localhost:8082/store/Example Store & Co.
