@@ -1,10 +1,7 @@
 package com.odilonjk.shopplatformstore;
 
 import com.mongodb.BasicDBObject;
-import com.mongodb.client.FindIterable;
-import com.mongodb.client.MongoClient;
-import com.mongodb.client.MongoCollection;
-import com.mongodb.client.MongoCursor;
+import com.mongodb.client.*;
 import org.bson.Document;
 
 import javax.enterprise.context.ApplicationScoped;
@@ -21,28 +18,25 @@ public class StoreService {
     @Inject
     MongoClient mongoClient;
 
-    public void createStore(Store store) {
+    void createStore(Store store) {
         Document document = new Document().append("name", store.getName());
-        getCollection().insertOne(document);
+        MongoDatabase db = mongoClient.getDatabase(SHOP_PLATFORM_STORE_DB);
+        MongoCollection<Document> stores = db.getCollection(STORE_COLLECTION);
+        stores.insertOne(document);
     }
 
-    public List<Store> findByName(String name) {
+    List<Store> findByName(String name) {
         BasicDBObject query = new BasicDBObject();
         query.put("name", name);
-        MongoCursor<Store> cursor = getCollection().find(query).iterator();
-        List<Store> stores = new ArrayList<>();
-        try {
-            while (cursor.hasNext()) {
-                stores.add(cursor.next());
-            }
-        } finally {
-            cursor.close();
+        MongoDatabase db = mongoClient.getDatabase(SHOP_PLATFORM_STORE_DB);
+        MongoCollection<Store> stores = db.getCollection(STORE_COLLECTION, Store.class);
+        FindIterable<Store> iterable = stores.find(query);
+        MongoCursor<Store> cursor = iterable.iterator();
+        List<Store> storesFound = new ArrayList<>();
+        while (cursor.hasNext()) {
+            storesFound.add(cursor.next());
         }
-        return stores;
-    }
-
-    private MongoCollection getCollection() {
-        return mongoClient.getDatabase(SHOP_PLATFORM_STORE_DB).getCollection(STORE_COLLECTION);
+        return  storesFound;
     }
 
 }

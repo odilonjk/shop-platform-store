@@ -1,28 +1,29 @@
 package com.odilonjk.shopplatformstore;
 
 import io.quarkus.runtime.annotations.RegisterForReflection;
+import org.bson.types.ObjectId;
 
 import java.util.Objects;
 
 @RegisterForReflection
 public class Store {
 
-    private String id;
+    private ObjectId id;
     private String name;
 
     public Store() {
     }
 
-    public Store(String id, String name) {
+    public Store(ObjectId id, String name) {
         this.id = id;
         this.name = name;
     }
 
-    public String getId() {
+    public ObjectId getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(ObjectId id) {
         this.id = id;
     }
 

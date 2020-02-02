@@ -6,9 +6,9 @@
 
 ### This project uses
 
-* JDK 1.8
-* Quarkus 1.1
-* GraalVM 19.2.1
+* JDK 11
+* Quarkus 1.2.0
+* GraalVM 19.3.1
 
 ---
 
@@ -18,13 +18,13 @@
 
     $ mvn clean package -Pnative -Dnative-image.docker-build=true
     $ docker build -f Dockerfile.native -t shop-platform-store .
-    $ docker run -d --rm --name shop-platform-store-jvm -p 8082:8082 --link=mongodb:mongodb shop-platform-store:latest
+    $ docker run -d --rm --name shop-platform-store -p 8082:8082 --link=mongodb:mongodb shop-platform-store:latest
 
 ##### JVM build
 
     $ mvn clean package
     $ docker build -f Dockerfile.jvm -t shop-platform-store-jvm .
-    $ docker run -d --rm --name shop-platform-customer -p 8082:8082 --link=mongodb:mongodb shop-platform-store-jvm:latest
+    $ docker run -d --rm --name shop-platform-store-jvm -p 8082:8082 --link=mongodb:mongodb shop-platform-store-jvm:latest
 
 Ps¹.: Remember, you need to have GraalVM properly installed to build it into native.
 
